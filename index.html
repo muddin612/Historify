@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Spotify Sound Log</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <style>
+            body{
+                background-color: #191414;
+                color: #FFFFFF;
+            }
+            .slide img{
+                aspect-ratio: 16/9;
+            }
+            .carousel-control-next,.carousel-control-prev {
+                background-color: transparent;
+                border: none;
+            }
+            .Center {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+
+        </style>
+    </head>
+    <body>
+
+        <!-- Nav Bar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-#191414">
+            <a class="navbar-brand" href="index.html">
+                <img src="Spotify_logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                Spotify Sound Log</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+              </ul>
+              <form class="form-inline my-2 my-lg-0">
+                <a class="btn btn-outline-success my-2 my-sm-0 mr-3" href="login.html">Login</a>
+                <a class="btn btn-outline-success my-2 my-sm-0" href="signup.html">Sign Up</a>
+              </form>
+            </div>
+          </nav>
+        
+          <!-- Top 5 Songs -->
+            <div style="width:100%" class="slide">
+                <h1 class="Center"> Top 5 Most Listened to Songs</h2>
+                    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                          <div class="carousel-item active">
+                            <img src="album_cover2.jpg" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                              <h5>First slide label</h5>
+                              <p>Some representative placeholder content for the first slide.</p>
+                            </div>
+                          </div>
+                          <div class="carousel-item">
+                            <img src="album_cover1.png" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                              <h5>Second slide label</h5>
+                              <p>Some representative placeholder content for the second slide.</p>
+                            </div>
+                          </div>
+                          <div class="carousel-item">
+                            <img src="album_cover3.png" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                              <h5>Third slide label</h5>
+                              <p>Some representative placeholder content for the third slide.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                        <script>
+                            $(document).ready(function() {
+                                $('.carousel-control-prev').click(function() {
+                                    $('#carouselExampleCaptions').carousel('prev');
+                                });
+                                
+                                $('.carousel-control-next').click(function() {
+                                    $('#carouselExampleCaptions').carousel('next');
+                                });
+                            });
+                        </script>
+                      </div>
+            </div>
+
+            <div>
+                <h1 class="Center">Spotify Listening History</h1>
+                
+                <div>
+                    <table id="spotify_history_table" class="table">
+                        <thead style="color: #FFFFFF;">
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: #FFFFFF;">
+                            <!-- Table rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+                <script>
+                    // JavaScript code to add rows to the table
+                    $(document).ready(function() {
+                        var data = [
+                            { name: "John Doe", age: 25 },
+                            { name: "Jane Smith", age: 30 },
+                            { name: "Mike Johnson", age: 35 },
+                            { name: "Jane Smith", age: 30 },
+                            { name: "Jane Smith", age: 30 },
+                            { name: "Jane Smith", age: 30 },
+                            { name: "Jane Smith", age: 30 },
+                            { name: "Jane Smith", age: 30 },
+                            { name: "Jane Smith", age: 30 }
+                            
+
+                        ];
+                        
+                        var table = document.getElementById("spotify_history_table");
+                        var tbody = table.getElementsByTagName("tbody")[0];
+                        
+                        data.forEach(function(item) {
+                            var row = tbody.insertRow();
+                            var nameCell = row.insertCell();
+                            var ageCell = row.insertCell();
+                            
+                            nameCell.innerHTML = item.name;
+                            ageCell.innerHTML = item.age;
+                        });
+                    });
+                </script>
+
+            </div>
+
+
+
+    </body>
+    <footer class="footer bg-#191414 text-white text-center bottom">
+        <div class="container">
+            <p>&copy; 2023 Mohammed Uddin. All rights reserved.</p>
+        </div>
+
+    </footer>
+
+</html>
