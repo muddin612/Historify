@@ -3,7 +3,7 @@ const redirectUri = 'https://main--stellular-manatee-a99798.netlify.app/';
 
 function authorizeSpotify(){
 
-    var scopes = ['user-read-playback-state', 'user-read-currently-playing', ]
+    var scopes = ['user-read-playback-state','user-read-currently-playing','user-read-recently-played'];
 
     var authUrl = 'https://accounts.spotify.com/authorize' +
     '?response_type=token' +
@@ -11,7 +11,7 @@ function authorizeSpotify(){
     '&scope=' + encodeURIComponent(scopes.join(' ')) +
     '&redirect_uri=' + encodeURIComponent(redirectUri);
 
-   // var loginWindow = window.open(authUrl, 'Login with Spotify', 'width=400,height=600');
+    var loginWindow = window.open(authUrl, 'Login with Spotify', 'width=400,height=600');
 
 }
 
