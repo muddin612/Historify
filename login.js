@@ -1,5 +1,5 @@
 const clientId = '811cede9e60344be9193ad3ebee82def';
-const redirectUri = 'http://127.0.0.1:3000/index.html';
+const redirectUri = 'https://main--stellular-manatee-a99798.netlify.app/';
 
 function authorizeSpotify(){
 
