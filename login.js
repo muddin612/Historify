@@ -24,4 +24,6 @@ function handleCallback(){
     window.close();
 
     console.log('Access Token:', accessToken);
+
+    getListeningHistory(accessToken);
 }

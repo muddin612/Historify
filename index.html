@@ -9,6 +9,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="login.js"></script>
+        <script src="spotifiy.js"></script>
         <style>
             body{
                 background-color: #191414;
@@ -115,8 +116,10 @@
                     <table id="spotify_history_table" class="table">
                         <thead style="color: #FFFFFF;">
                             <tr>
-                                <th>Name</th>
-                                <th>Age</th>
+                                <th></th>
+                                <th>Artist</th>
+                                <th>Title</th>
+                                <th>Album</th>
                             </tr>
                         </thead>
                         <tbody style="color: #FFFFFF;">
@@ -124,31 +127,6 @@
                         </tbody>
                     </table>
                 </div>
-                <script>
-                    // JavaScript code to add rows to the table
-                    $(document).ready(function() {
-                        var data = [
-                            { name: "John Doe", age: 25 },
-                            { name: "Jane Smith", age: 30 },
-                            { name: "Mike Johnson", age: 35 },
-                            { name: "Jane Smith", age: 30 },
-                            { name: "Jane Smith", age: 30 }
-                        ];
-                        
-                        var table = document.getElementById("spotify_history_table");
-                        var tbody = table.getElementsByTagName("tbody")[0];
-                        
-                        data.forEach(function(item) {
-                            var row = tbody.insertRow();
-                            var nameCell = row.insertCell();
-                            var ageCell = row.insertCell();
-                            
-                            nameCell.innerHTML = item.name;
-                            ageCell.innerHTML = item.age;
-                        });
-                    });
-                </script>
-
             </div>
 
 
