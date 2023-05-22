@@ -11,7 +11,7 @@ function authorizeSpotify(){
     '&scope=' + encodeURIComponent(scopes.join(' ')) +
     '&redirect_uri=' + encodeURIComponent(redirectUri);
 
-    var loginWindow = window.open(authUrl, 'Login with Spotify', 'width=400,height=600');
+   // var loginWindow = window.open(authUrl, 'Login with Spotify', 'width=400,height=600');
 
 }
 
