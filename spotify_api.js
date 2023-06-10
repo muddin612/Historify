@@ -2,9 +2,6 @@ const clientId = "811cede9e60344be9193ad3ebee82def"; // Replace with your client
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
-const accessToken = localStorage.getItem("accessToken");
-const refreshToken = localStorage.getItem("refreshToken");
-
 if (!code) {
     redirectToAuthCodeFlow(clientId);
 } else {
