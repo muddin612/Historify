@@ -9,10 +9,8 @@ if (!code) {
     redirectToAuthCodeFlow(clientId);
 } else {
     const accessToken =  getAccessToken(clientId, code);
-    console.log("Access token: ", accessToken);
 
     const topSong = accessToken.then(json => fetchTopSong(json));
-    console.log(topSong);
     topSong.then(json => fillTopSong(json));
 }
 
@@ -71,20 +69,11 @@ async function getAccessToken(clientId, code) {
   });
   
   const data = await result.json();
-  console.log("Access Token Json: ");
-  console.log(data);
 
   let accessToken = data.access_token;
   let refreshToken = data.refresh_token;
   const expiresIn = data.expires_in;
   const expirationTime = Date.now() + expiresIn * 1000;
-
-  console.log("Access token:", accessToken);
-  console.log("refresh Token:",refreshToken);
-  console.log("Expiration Time:", expirationTime);
-
-  //var token = getRefreshToken(clientId, refreshToken);
-  //console.log(token);
 
   if(expirationTime < Date.now()){
     var token = getRefreshToken(clientId, refreshToken);
@@ -120,8 +109,6 @@ async function getRefreshToken(clientId,refreshToken){
   });
 
   const refreshData = await result.json();
-  console.log("Refresh Token Json: ");
-  console.log(refreshData);
 
   return refreshData.access_token;
 
@@ -160,14 +147,7 @@ function fillTopSong(topSong){
             album.textContent = albumName;
             artist.textContent = artistName;
             image.src = albumURI;
-            image.alt = songName;
-
-
-            console.log("Song Name: ", songName );
-            console.log("Album Name: ", albumName);
-            console.log("Artist: ", artistName);
-            console.log("Album URL: ", albumURI);
-        
+            image.alt = songName;        
         }
     }
     else{
