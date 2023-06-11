@@ -9,6 +9,7 @@ if (!code) {
 
     const topSong = accessToken.then(json => fetchTopSong(json));
     topSong.then(json => fillTopSong(json));
+    topSong.then(json => fillHistory(json));
 }
 
 
@@ -114,7 +115,7 @@ async function getRefreshToken(clientId,refreshToken){
 
 
 async function fetchTopSong(token){
-    const result = await fetch("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=5&offset=0",{
+    const result = await fetch("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=10&offset=0",{
         method: "GET", headers:{Authorization: `Bearer ${token}`}
     });
 
@@ -126,6 +127,7 @@ async function fetchTopSong(token){
 function fillTopSong(topSong){
     var items = topSong.items;
     //const carouselItems = document.querySelector('.carousel-item');
+    let carouselInner = document.getElementById("carousel-inner");
    if( items && items.length > 0){
         for(var x = 0; x < items.length; x++){
 
@@ -134,22 +136,116 @@ function fillTopSong(topSong){
             var artistName = items[x].album.artists[0].name;
             var albumURI = items[x].album.images[0].url;
 
-            var carouselItem = document.getElementById('carousel-' + (x + 1));
-            var songTitle = carouselItem.querySelector('#songTitle');
-            var album = carouselItem.querySelector('#ablum');
-            var artist = carouselItem.querySelector('#artist');
-            var image = carouselItem.querySelector('.d-block');
+            var card = document.createElement('div');
+            card.classList.add('card');
+            card.style.width = '30rem';
+            card.classList.add('d-flex');
+            card.classList.add('align-items-center');
+            card.classList.add('bg-dark');
+            card.style.margin = "0% auto";
 
-            songTitle.textContent = songName;
-            album.textContent = albumName;
-            artist.textContent = artistName;
+            var image = document.createElement('img');
+            image.classList.add('card-img-top');
             image.src = albumURI;
-            image.alt = songName;        
+            image.alt = 'Card image cap';
+      
+            var cardBody = document.createElement('div');
+            cardBody.classList.add('card-body');
+            cardBody.classList.add('text-center');
+
+      
+            var songTitle = document.createElement('h5');
+            songTitle.classList.add('card-title');
+            songTitle.classList.add('text-light');
+            songTitle.textContent = songName;
+      
+            var album = document.createElement('p');
+            album.classList.add('card-text');
+            album.classList.add('text-light');
+            album.textContent = albumName;
+      
+            var artist = document.createElement('p');
+            artist.classList.add('card-text')
+            artist.classList.add('text-light');
+            artist.textContent = artistName;
+            cardBody.appendChild(songTitle);
+            cardBody.appendChild(album);
+            cardBody.appendChild(artist);
+      
+            card.appendChild(image);
+            card.appendChild(cardBody);
+      
+            var carouselItem = document.createElement('div');
+            carouselItem.classList.add('carousel-item');
+            if (x === 0) {
+              carouselItem.classList.add('active');
+            }
+      
+            carouselItem.appendChild(card);
+            carouselInner.appendChild(carouselItem);
         }
     }
     else{
         console.log("No Top Songs found");
     }
 
+
+}
+
+function fillHistory(history){
+
+    var items = history.items; 
+    var gridContainer = document.getElementById('gridContainer');
+    var gridDiv = document.createElement('div');
+    gridDiv.className = 'row';  
+
+    if( items && items.length > 0){
+        for(var x = 0; x < items.length; x++){
+
+            var songName = items[x].name;
+            var albumName = items[x].album.name;
+            var artistName = items[x].album.artists[0].name;
+            var albumURI = items[x].album.images[0].url;
+
+            var cardDiv = document.createElement('div');
+            cardDiv.className = 'col-sm-2 card';
+            cardDiv.style.width = '18rem';
+            cardDiv.classList.add('d-flex')
+            cardDiv.classList.add('bg-dark');
+
+            var img = document.createElement('img');
+            img.className = 'card-img-top';
+            img.src = albumURI;
+            img.alt = songName;
+
+            var innerDiv = document.createElement('div');
+            innerDiv.className = 'card-body';
+
+            var h5 = document.createElement('h5');
+            h5.className = 'card-title';
+            h5.textContent = songName;
+
+            var p = document.createElement('p');
+            p.className = 'card-text';
+            p.textContent = albumName;
+
+            var p1 = document.createElement('p');
+            p1.className = 'card-text';
+            p1.textContent = artistName;
+
+            innerDiv.appendChild(h5);
+            innerDiv.appendChild(p);
+            innerDiv.appendChild(p1);
+
+            cardDiv.appendChild(img);
+            cardDiv.appendChild(innerDiv);
+
+            gridDiv.appendChild(cardDiv);
+
+
+        }
+        gridContainer.appendChild(gridDiv);
+    }
+    
 
 }

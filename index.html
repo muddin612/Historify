@@ -23,12 +23,24 @@
                 align-items: center;
                 justify-content: center;
             }
-
-            .carousel-item p{
-              color: aqua;
+            .row::after {
+            content: "";
+            clear: both;
+            display: table;
             }
 
+            .col-4 {
+            float: left;
+            width: 33.33%;
+            padding: 10px;
+            box-sizing: border-box;
+            }
 
+            .card {
+            border: 1px solid #1DB954;
+            border-radius: 5px;
+            padding: 10px;
+            }
         </style>
     </head>
     <body>
@@ -58,62 +70,11 @@
           </nav>
         
           <!-- Top 5 Songs -->
-            <div style="width:100%" class="slide" id="top5Songs">
-                <h1 class="Center"> Top 5 Most Listened to Songs</h2>
+            <div style="width:100%" class="slide container" id="top5Songs">
+                <h1 class="Center"> Top 10 Most Listened to Songs</h2>
                   <br>
                     <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                          <div class="carousel-item active" id="carousel-1">
-                            <div class="image-container d-flex align-items-center justify-content-center">
-                              <img src="" class="d-block w-50 img-fluid img-thumbnail" alt="">
-                            </div>
-                            <div class="carousel-caption d-none d-md-block">
-                              <p id="songTitle">[song title from spotify api]</p>
-                              <p id="ablum">[album]</p>
-                              <p id="artist">[artist name from spotify api]</p>
-                            </div>
-                          </div>
-                          <div class="carousel-item" id="carousel-2">
-                            <div class="image-container d-flex align-items-center justify-content-center">
-                              <img src="" class="d-block w-50 img-fluid img-thumbnail" alt="">
-                            </div>
-                            <div class="carousel-caption d-none d-md-block">
-                              <p id="songTitle">[song title from spotify api]</p>
-                              <p id="ablum">[album]</p>
-                              <p id="artist">[artist name from spotify api]</p>
-                            </div>
-                          </div>
-                          <div class="carousel-item" id="carousel-3" >
-                            <div class="image-container d-flex align-items-center justify-content-center">
-                              <img src="" class="d-block w-50 img-fluid img-thumbnail" alt="">
-                            </div>
-                            <div class="carousel-caption d-none d-md-block">
-                              <p id="songTitle">[song title from spotify api]</p>
-                              <p id="ablum">[album]</p>
-                              <p id="artist">[artist name from spotify api]</p>
-                            </div>
-                          </div>
-                          <div class="carousel-item" id="carousel-4" >
-                            <div class="image-container d-flex align-items-center justify-content-center">
-                              <img src="" class="d-block w-50 img-fluid img-thumbnail" alt="">
-                            </div>
-                            <div class="carousel-caption d-none d-md-block">
-                              <p id="songTitle">[song title from spotify api]</p>
-                              <p id="ablum">[album]</p>
-                              <p id="artist">[artist name from spotify api]</p>
-                            </div>
-                          </div>
-                          <div class="carousel-item" id="carousel-5" >
-                            <div class="image-container d-flex align-items-center justify-content-center">
-                              <img src="" class="d-block w-50 img-fluid img-thumbnail" alt="">
-                            </div>
-                            <div class="carousel-caption d-none d-md-block">
-                              <p id="songTitle">[song title from spotify api]</p>
-                              <p id="ablum">[album]</p>
-                              <p id="artist">[artist name from spotify api]</p>
-                            </div>
-                          </div>
-                        </div>
+                        <div class="carousel-inner" id="carousel-inner"></div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                           <span class="visually-hidden">Previous</span>
@@ -135,10 +96,14 @@
                         </script>
                       </div>
             </div>
+
+
+
             <br>
             <div>
                 <h1 class="Center">Spotify Listening History</h1>
                 <br>
+                <div style="width:90%; margin: 0% auto;" id="gridContainer"></div>
             </div>
 
 
