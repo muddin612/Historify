@@ -22,23 +22,17 @@ if (!code) {
     }
     else if( localStorage.getItem("expireTime") <= currentTime ){
        getRefreshToken(clientId,refreshToken);
-       console.log(localStorage.getItem("expireTime") <= currentTime);
     }
-
-    console.log(localStorage.getItem("expireTime") <= currentTime);
-    
-
 
     const topSong = fetchTopSong(accessToken);
     topSong.then(json => fillTopSong(json));
     topSong.then(json => fillHistory(json));
 
     const currentSong =  fetchCurrentlyPlayed(accessToken);
-    console.log("CurrentSong",currentSong);
+
     currentSong.then(currentSong => fillLocalArray(currentSong));
 
     let songs = JSON.parse( localStorage.getItem("recentlyPlayMusic"));
-    console.log("Array:", songs );
 }
 
 
@@ -183,26 +177,18 @@ async function fetchCurrentlyPlayed(token){
     });
 
     const data = await result.json();
-    console.log("Data Recently Played:", data);
 
     var playTime = data.items[0].played_at;
-    console.log("Play At Time:",playTime);
-
     var date = new Date(playTime);
     var dateEpoch = date.getTime();
     console.log(date,dateEpoch);
 
    
     var songTitle = data.items[0].track.name;
-    console.log("Song Title:", songTitle);
     var albumTitle = data.items[0].track.album.name;
-    console.log("Album title:", albumTitle);
     var artist = data.items[0].track.album.artists[0].name;
-    console.log("Artist:",artist);
     var url = data.items[0].track.album.images[0].url;
-    console.log("URL:",url);
     var spotifyURL = data.items[0].track.external_urls.spotify;
-    console.log("Spotify Link:",spotifyURL);
 
     let song = {
         songName: songTitle,
@@ -361,8 +347,6 @@ function fillHistory(history){
 }
 
 function fillLocalArray(object){
-    
-    console.log("recentlyPlayMusic",localStorage.getItem("recentlyPlayMusic"));
     if( localStorage.getItem("recentlyPlayMusic") === null){
         localStorage.setItem("recentlyPlayMusic",JSON.stringify([[]]))
     }
