@@ -9,39 +9,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="spotify_api.js"></script>
-        <style>
-            body{
-                background-color: #191414;
-                color: #FFFFFF;
-            }
-            .carousel-control-next,.carousel-control-prev {
-                background-color: transparent;
-                border: none;
-            }
-            .Center {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .row::after {
-            content: "";
-            clear: both;
-            display: table;
-            }
-
-            .col-4 {
-            float: left;
-            width: 33.33%;
-            padding: 10px;
-            box-sizing: border-box;
-            }
-
-            .card {
-            border: 1px solid #1DB954;
-            border-radius: 5px;
-            padding: 10px;
-            }
-        </style>
+        <link rel="stylesheet" href="main.css">
     </head>
     <body>
 
@@ -57,13 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
                 </li>
               </ul>
             </div>
@@ -103,7 +65,7 @@
             <div>
                 <h1 class="Center">Spotify Listening History</h1>
                 <br>
-                <div style="width:90%; margin: 0% auto;" id="gridContainer"></div>
+                <div style="width:90%; margin: 0% auto;" id="gridContainer" class="grid"></div>
             </div>
 
 

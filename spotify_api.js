@@ -5,11 +5,37 @@ const code = params.get("code");
 if (!code) {
     redirectToAuthCodeFlow(clientId);
 } else {
-    const accessToken =  getAccessToken(clientId, code);
+    let accessToken = localStorage.getItem("accessToken");
+    console.log("Access Token",accessToken);
 
-    const topSong = accessToken.then(json => fetchTopSong(json));
+    let refreshToken = localStorage.getItem("refreshToken");
+    console.log("Refresh Token",refreshToken);
+
+    const currentTime = Math.floor(Date.now() / 1000);
+    console.log("Current Time",currentTime);
+
+    if(accessToken === "" || accessToken === null){
+        accessToken =  getAccessToken(clientId, code);
+    }
+    else if( localStorage.getItem("expireTime") <= currentTime ){
+       getRefreshToken(clientId,refreshToken);
+       console.log(localStorage.getItem("expireTime") <= currentTime);
+    }
+
+    console.log(localStorage.getItem("expireTime") <= currentTime);
+    
+
+
+    const topSong = fetchTopSong(accessToken);
     topSong.then(json => fillTopSong(json));
     topSong.then(json => fillHistory(json));
+
+    const currentSong =  fetchCurrentlyPlayed(accessToken);
+    console.log("CurrentSong",currentSong);
+    currentSong.then(currentSong => fillLocalArray(currentSong));
+
+    let songs = JSON.parse( localStorage.getItem("recentlyPlayMusic"));
+    console.log("Array:", songs );
 }
 
 
@@ -23,7 +49,7 @@ async function redirectToAuthCodeFlow(clientId) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "http://127.0.0.1:3000/index.html");
+    params.append("redirect_uri", "https://main--stellular-manatee-a99798.netlify.app/");
     params.append("scope", "user-read-private user-read-email user-top-read user-read-recently-played");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
@@ -57,7 +83,7 @@ async function getAccessToken(clientId, code) {
   params.append("client_id", clientId);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri", "http://127.0.0.1:3000/index.html");
+  params.append("redirect_uri", "https://main--stellular-manatee-a99798.netlify.app/");
   params.append("code_verifier", verifier);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -69,21 +95,25 @@ async function getAccessToken(clientId, code) {
   const data = await result.json();
 
   let accessToken = data.access_token;
-  let refreshToken = data.refresh_token;
-  const expiresIn = data.expires_in;
-  const expirationTime = Date.now() + expiresIn * 1000;
 
-  if(expirationTime < Date.now()){
-    var token = getRefreshToken(clientId, refreshToken);
-    token.then(newToken => accessToken = newToken);
-
-    if(token.refresh_token){
-        refreshToken = token.refresh_token;
-        localStorage.setItem("refreshToken", refreshToken);
-    }
+  if( accessToken === undefined){
+    localStorage.setItem("accessToken","");
   }
 
+  localStorage.setItem("accessToken",accessToken);
+  
+  
+  let refreshToken = data.refresh_token;
 
+  if( refreshToken === undefined){
+    localStorage.setItem("refreshToken","");
+  }
+  
+  localStorage.setItem("refreshToken",refreshToken);
+
+  const expireTime = Math.floor(Date.now() / 1000) + data.expires_in;
+  localStorage.setItem("expireTime",expireTime);
+  
   return accessToken;
 
 }
@@ -99,6 +129,7 @@ async function getRefreshToken(clientId,refreshToken){
     refreshParams.append("grant_type", "refresh_token");
     refreshParams.append("refresh_token", refreshToken);
     refreshParams.append("code_verifier", refreshVerifier);
+    refreshParams.append("code_challenge", refreshChallenge);
 
     const result = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
@@ -106,9 +137,28 @@ async function getRefreshToken(clientId,refreshToken){
       body: refreshParams
   });
 
-  const refreshData = await result.json();
+  const data = await result.json();
 
-  return refreshData.access_token;
+  let newAccessToken = data.access_token;
+
+  if( newAccessToken === undefined){
+    localStorage.setItem("accessToken","");
+  }
+
+  localStorage.setItem("accessToken",newAccessToken);
+  
+  
+  let newRefreshToken = data.refresh_token;
+
+  if( newRefreshToken === undefined){
+    localStorage.setItem("refreshToken","");
+  }
+  
+  localStorage.setItem("refreshToken",newRefreshToken);
+  
+
+  const newExpireTime = Math.floor(Date.now() / 1000) + data.expires_in;
+  localStorage.setItem("expireTime",newExpireTime);
 
 
 }
@@ -124,6 +174,45 @@ async function fetchTopSong(token){
 
 }
 
+async function fetchCurrentlyPlayed(token){
+    const result = await fetch("https://api.spotify.com/v1/me/player/recently-played?limit=1",{
+        method: "GET", headers:{Authorization: `Bearer ${token}`}
+    });
+
+    const data = await result.json();
+    console.log("Data Recently Played:", data);
+
+    var playTime = data.items[0].played_at;
+    console.log("Play At Time:",playTime);
+
+    var date = new Date(playTime);
+    var dateEpoch = date.getTime();
+    console.log(date,dateEpoch);
+
+   
+    var songTitle = data.items[0].track.name;
+    console.log("Song Title:", songTitle);
+    var albumTitle = data.items[0].track.album.name;
+    console.log("Album title:", albumTitle);
+    var artist = data.items[0].track.album.artists[0].name;
+    console.log("Artist:",artist);
+    var url = data.items[0].track.album.images[0].url;
+    console.log("URL:",url);
+    var spotifyURL = data.items[0].track.external_urls.spotify;
+    console.log("Spotify Link:",spotifyURL);
+
+    let song = {
+        songName: songTitle,
+        album: albumTitle,
+        artistName: artist,
+        songPicURL: url,
+        playedTimeEpoch: dateEpoch,
+        playTimeNormal: date,
+        spotifyLink: spotifyURL
+    };
+    return song;
+}
+
 function fillTopSong(topSong){
     var items = topSong.items;
     //const carouselItems = document.querySelector('.carousel-item');
@@ -135,10 +224,12 @@ function fillTopSong(topSong){
             var albumName = items[x].album.name;
             var artistName = items[x].album.artists[0].name;
             var albumURI = items[x].album.images[0].url;
+            var url = items[x].external_urls.spotify;
+
 
             var card = document.createElement('div');
             card.classList.add('card');
-            card.style.width = '30rem';
+            card.style.width = '60%';
             card.classList.add('d-flex');
             card.classList.add('align-items-center');
             card.classList.add('bg-dark');
@@ -168,9 +259,18 @@ function fillTopSong(topSong){
             artist.classList.add('card-text')
             artist.classList.add('text-light');
             artist.textContent = artistName;
+
+            var link = document.createElement('a');
+            link.classList.add('btn');
+            link.classList.add('btn-outline-success');
+            link.textContent = 'Open on Spotify';
+            link.href = url;
+
+
             cardBody.appendChild(songTitle);
             cardBody.appendChild(album);
             cardBody.appendChild(artist);
+            cardBody.appendChild(link);
       
             card.appendChild(image);
             card.appendChild(cardBody);
@@ -206,12 +306,12 @@ function fillHistory(history){
             var albumName = items[x].album.name;
             var artistName = items[x].album.artists[0].name;
             var albumURI = items[x].album.images[0].url;
+            var url = items[x].external_urls.spotify;
 
             var cardDiv = document.createElement('div');
-            cardDiv.className = 'col-sm-2 card';
-            cardDiv.style.width = '18rem';
+            cardDiv.className = 'col-sm-3 card';
+            cardDiv.style.width = '40%';
             cardDiv.classList.add('d-flex')
-            cardDiv.classList.add('bg-dark');
 
             var img = document.createElement('img');
             img.className = 'card-img-top';
@@ -233,9 +333,16 @@ function fillHistory(history){
             p1.className = 'card-text';
             p1.textContent = artistName;
 
+            var link = document.createElement('a');
+            link.classList.add('btn');
+            link.classList.add('btn-outline-success');
+            link.textContent = 'Open on Spotify';
+            link.href = url;
+
             innerDiv.appendChild(h5);
             innerDiv.appendChild(p);
             innerDiv.appendChild(p1);
+            innerDiv.appendChild(link);
 
             cardDiv.appendChild(img);
             cardDiv.appendChild(innerDiv);
@@ -248,4 +355,22 @@ function fillHistory(history){
     }
     
 
+}
+
+function fillLocalArray(object){
+    
+    console.log("recentlyPlayMusic",localStorage.getItem("recentlyPlayMusic"));
+    if( localStorage.getItem("recentlyPlayMusic") === null){
+        localStorage.setItem("recentlyPlayMusic",JSON.stringify([[]]))
+    }
+    let reArray = JSON.parse(localStorage.getItem("recentlyPlayMusic") || []);
+    reArray.splice(0, reArray.length);
+
+    reArray.push(object);
+
+    localStorage.setItem("recentlyPlayMusic", JSON.stringify(reArray));
+}
+
+function sortArray(){
+    
 }

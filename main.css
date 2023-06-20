@@ -1,0 +1,32 @@
+body{
+    background-color: #191414;
+    color: #FFFFFF;
+}
+.carousel-control-next,.carousel-control-prev {
+    background-color: transparent;
+    border: none;
+}
+.Center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+    }
+
+    .col-sm-3 {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    box-sizing: border-box;
+    }
+
+    .grid .card {
+    border: 2px solid #191414;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #191414;
+    }
