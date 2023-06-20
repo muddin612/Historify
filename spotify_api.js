@@ -96,7 +96,7 @@ async function getAccessToken(clientId, code) {
 
   let accessToken = data.access_token;
 
-  if( accessToken){
+  if( accessToken === undefined){
     localStorage.setItem("accessToken","");
   }
 
