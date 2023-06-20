@@ -14,26 +14,28 @@ if (!code) {
     const currentTime = Math.floor(Date.now() / 1000);
     console.log("Current Time",currentTime);
 
-    if(accessToken === "" || accessToken === null || accessToken === undefined){
-        
+    if(accessToken === "" || accessToken === null){
         accessToken =  getAccessToken(clientId, code);
-
-
-        
     }
     else if( localStorage.getItem("expireTime") <= currentTime ){
        getRefreshToken(clientId,refreshToken);
+       console.log(localStorage.getItem("expireTime") <= currentTime);
     }
+
+    console.log(localStorage.getItem("expireTime") <= currentTime);
+    
+
 
     const topSong = fetchTopSong(accessToken);
     topSong.then(json => fillTopSong(json));
     topSong.then(json => fillHistory(json));
 
     const currentSong =  fetchCurrentlyPlayed(accessToken);
-
+    console.log("CurrentSong",currentSong);
     currentSong.then(currentSong => fillLocalArray(currentSong));
 
     let songs = JSON.parse( localStorage.getItem("recentlyPlayMusic"));
+    console.log("Array:", songs );
 }
 
 
@@ -47,7 +49,7 @@ async function redirectToAuthCodeFlow(clientId) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "https://main--stellular-manatee-a99798.netlify.app/");
+    params.append("redirect_uri", "http://127.0.0.1:3000/index.html");
     params.append("scope", "user-read-private user-read-email user-top-read user-read-recently-played");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
@@ -81,7 +83,7 @@ async function getAccessToken(clientId, code) {
   params.append("client_id", clientId);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri", "https://main--stellular-manatee-a99798.netlify.app/");
+  params.append("redirect_uri", "http://127.0.0.1:3000/index.html");
   params.append("code_verifier", verifier);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -96,9 +98,7 @@ async function getAccessToken(clientId, code) {
 
   if( accessToken === undefined){
     localStorage.setItem("accessToken","");
-    console.log("ydtuvqybiunodimp");
   }
-  console.log(accessToken);
 
   localStorage.setItem("accessToken",accessToken);
   
@@ -180,18 +180,26 @@ async function fetchCurrentlyPlayed(token){
     });
 
     const data = await result.json();
+    console.log("Data Recently Played:", data);
 
     var playTime = data.items[0].played_at;
+    console.log("Play At Time:",playTime);
+
     var date = new Date(playTime);
     var dateEpoch = date.getTime();
     console.log(date,dateEpoch);
 
    
     var songTitle = data.items[0].track.name;
+    console.log("Song Title:", songTitle);
     var albumTitle = data.items[0].track.album.name;
+    console.log("Album title:", albumTitle);
     var artist = data.items[0].track.album.artists[0].name;
+    console.log("Artist:",artist);
     var url = data.items[0].track.album.images[0].url;
+    console.log("URL:",url);
     var spotifyURL = data.items[0].track.external_urls.spotify;
+    console.log("Spotify Link:",spotifyURL);
 
     let song = {
         songName: songTitle,
@@ -350,6 +358,8 @@ function fillHistory(history){
 }
 
 function fillLocalArray(object){
+    
+    console.log("recentlyPlayMusic",localStorage.getItem("recentlyPlayMusic"));
     if( localStorage.getItem("recentlyPlayMusic") === null){
         localStorage.setItem("recentlyPlayMusic",JSON.stringify([[]]))
     }
