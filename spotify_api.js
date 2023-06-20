@@ -15,9 +15,8 @@ if (!code) {
     console.log("Current Time",currentTime);
 
     if(accessToken === "" || accessToken === null){
-        (async () => {
-            accessToken = await getAccessToken(clientId, code);
-        })();
+        
+        accessToken =  getAccessToken(clientId, code);
         
     }
     else if( localStorage.getItem("expireTime") <= currentTime ){
