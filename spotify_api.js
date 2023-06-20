@@ -14,9 +14,11 @@ if (!code) {
     const currentTime = Math.floor(Date.now() / 1000);
     console.log("Current Time",currentTime);
 
-    if(accessToken === "" || accessToken === null){
+    if(accessToken === "" || accessToken === null || accessToken === undefined){
         
         accessToken =  getAccessToken(clientId, code);
+
+
         
     }
     else if( localStorage.getItem("expireTime") <= currentTime ){
