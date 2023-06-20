@@ -94,6 +94,7 @@ async function getAccessToken(clientId, code) {
 
   if( accessToken === undefined){
     localStorage.setItem("accessToken","");
+    console.log("ydtuvqybiunodimp");
   }
 
   localStorage.setItem("accessToken",accessToken);
