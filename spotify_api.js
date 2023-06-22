@@ -214,7 +214,7 @@ function fillTopSong(topSong){
 
             var card = document.createElement('div');
             card.classList.add('card');
-            card.style.width = '60%';
+            card.style.width = '40%';
             card.classList.add('d-flex');
             card.classList.add('align-items-center');
             card.classList.add('bg-dark');
@@ -294,8 +294,8 @@ function fillHistory(history){
             var url = items[x].spotifyLink;
             
             var cardDiv = document.createElement('div');
-            cardDiv.className = 'col-sm-3 card';
-            cardDiv.style.width = '40%';
+            cardDiv.className = 'col-6 col-md-4 col-lg-3 card';
+            cardDiv.style.width = '30%';
             cardDiv.classList.add('d-flex')
 
             var img = document.createElement('img');
