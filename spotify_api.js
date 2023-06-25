@@ -182,7 +182,7 @@ async function fetchRecentlyPlayed(token){
         var albumTitle = data.items[x].track.album.name;
         var artist = data.items[x].track.album.artists[0].name;
         var url = data.items[x].track.album.images[0].url;
-        var spotifyURL = data.items[0].track.external_urls.spotify;
+        var spotifyURL = data.items[x].track.external_urls.spotify;
 
         let song = {
             songName: songTitle,
