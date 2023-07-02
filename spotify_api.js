@@ -2,7 +2,7 @@ const clientId = "811cede9e60344be9193ad3ebee82def";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
-if (!code) {
+if (!code && ( accessToken === "" || accessToken === null) ) {
     redirectToAuthCodeFlow(clientId);
 } else {
     let accessToken = localStorage.getItem("accessToken");
