@@ -4,16 +4,12 @@ const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 let accessToken = localStorage.getItem("accessToken");
 
-if(accessToken === "" || accessToken === null){
+
     document.addEventListener('click', function(event) {
         if (event.target.id === 'loginButton') {
             redirectToAuthCodeFlow(clientId);
         }
     });
-}
-else{
-    window.location.href = './main.html';
-}
 
 async function redirectToAuthCodeFlow(clientId) {
     const verifier = generateCodeVerifier(128);
