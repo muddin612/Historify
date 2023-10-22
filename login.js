@@ -2,12 +2,18 @@ import {generateCodeVerifier, generateCodeChallenge} from './helper.js';
 const clientId = "811cede9e60344be9193ad3ebee82def"; 
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
+let accessToken = localStorage.getItem("accessToken");
 
-document.addEventListener('click', function(event) {
-    if (event.target.id === 'loginButton') {
-        redirectToAuthCodeFlow(clientId);
-    }
-});
+if(accessToken === "" || accessToken === null){
+    document.addEventListener('click', function(event) {
+        if (event.target.id === 'loginButton') {
+            redirectToAuthCodeFlow(clientId);
+        }
+    });
+}
+else{
+    window.location.href = './main.html';
+}
 
 async function redirectToAuthCodeFlow(clientId) {
     const verifier = generateCodeVerifier(128);
