@@ -6,6 +6,12 @@ const code = params.get("code");
     let accessToken = localStorage.getItem("accessToken");
     let refreshToken = localStorage.getItem("refreshToken");
 
+    if(accessToken == "undefined"){
+        window.location.href = "./index.html";
+    }
+    else{
+        location.reload();
+
     const currentTime = Math.floor(Date.now() / 1000);
     console.log("Current Time",currentTime);
 
@@ -26,6 +32,7 @@ const code = params.get("code");
 
     const recentlyPlayed = fetchRecentlyPlayed(accessToken);
     recentlyPlayed.then(recentlyPlayed => fillHistory(recentlyPlayed));
+    }
 
 async function fetchTopSong(token){
     const result = await fetch("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=10&offset=0",{
