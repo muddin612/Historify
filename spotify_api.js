@@ -2,15 +2,12 @@ import { getAccessToken, getRefreshToken } from "./helper.js";
 const clientId = "811cede9e60344be9193ad3ebee82def";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
-
 let accessToken = localStorage.getItem("accessToken");
 let refreshToken = localStorage.getItem("refreshToken");
 
 if (accessToken == "undefined") {
   window.location.href = "./index.html";
 } else {
-  location.reload();
-
   const currentTime = Math.floor(Date.now() / 1000);
   console.log("Current Time", currentTime);
 
